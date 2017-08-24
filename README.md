@@ -1,9 +1,9 @@
 SonarEsLintPlugin
 =============
 
-SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarEsLintPlugin](https://github.com/Pablissimo/SonarEsLintPlugin)
+SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarTsPlugin](https://github.com/Pablissimo/SonarTsPlugin)
 
-Download [https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar](the plugin)
+Download [the plugin](https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar).
 
 Basically this plugin launches EsLint and colelcts its results into SonarQube. It may be slower than the own SonarQube javascript parser that I recommend to use for most usages. However if you are interested by AngularJS coding rules, uses my plugin :-)
 
@@ -11,7 +11,7 @@ Basically this plugin launches EsLint and colelcts its results into SonarQube. I
 [![Coverage Status](https://coveralls.io/repos/github/sleroy/SonarEsLintPlugin/badge.svg?branch=master)](https://coveralls.io/github/sleroy/SonarEsLintPlugin?branch=master)
 
 
-##Overview
+## Overview
 
 This is plugin for SonarQube 5.6+ for analysing projects with Javascript content that supports:
 * EsLint for code quality information
@@ -21,12 +21,12 @@ This is plugin for SonarQube 5.6+ for analysing projects with Javascript content
 
 It's presented only for the interested, and the brave.
 
-##Requirements
+## Requirements
 * Java 1.8+
 * SonarQube 5.6 LTS+
 * EsLint 3+ (Tested on 3.14)
 
-##Installation
+## Installation
 * Install Node.js
 * Install EsLint (3+) with `npm install -g eslint`, or ensure it is installed locally against your project
   * If you're installing globally, find the path to EsLint and copy it - will be similar to ```C:\Users\\[Username]\AppData\Roaming\npm\node_modules\eslint\bin\eslint.js``` on Windows
@@ -44,14 +44,14 @@ Optional steps :
 * EsLint rule breaches should be shown in the web view
 
 
-##EsLint installation and configuration
-By default, SonarEsLintPlugin will look for a version of EsLint installed locally within your project (i.e. in node_modules\eslint\bin), relative to the sonar-project.properties file. This may not be what you want, so you can set this directly via the ```sonar.ts.eslintpath``` configuration setting:
+## EsLint installation and configuration
+By default, SonarEsLintPlugin will look for a version of EsLint installed locally within your project (i.e. in node_modules\eslint\bin), relative to the sonar-project.properties file. This may not be what you want, so you can set this directly via the ```sonar.eslint.eslintpath``` configuration setting:
 * At project level
 * Globally, for all projects
 
 If analysis is failing, run ```sonar-runner``` with the ```-X -e``` options for more diagnostic information, including a note of where the plugin is searching for ```eslint```. Bear in mind that if running on a build server, the account running the build will need access to the path to ```eslint```.
 
-By default, SonarEsLintPlugin will look for a EsLint configuration file called eslint.json next to the sonar-project.properties file. You can override this using the ```sonar.ts.eslintconfigpath``` configuration setting if this isn't the case for your project.
+By default, SonarEsLintPlugin will look for a EsLint configuration file called eslint.json next to the sonar-project.properties file. You can override this using the ```sonar.eslint.eslintconfigpath``` configuration setting if this isn't the case for your project.
 
 Here an configuration example for .eslintrc.json
 
@@ -61,9 +61,9 @@ Here an configuration example for .eslintrc.json
 }
 ```
 
-##Configuration
+## Configuration
 
-###Example project configuration
+### Example project configuration
 This is an example of what a project configuration file (`sonar-project.properties`) could look like:
 ```
 sonar.projectKey=company:my-application
@@ -81,7 +81,7 @@ sonar.eslint.eslintconfigpath=eslint.json
 - See the [Narrowing the Focus](http://docs.sonarqube.org/display/SONAR/Narrowing+the+Focus) documentation page for configuration options related to which files to include.
 - See the rest of this README for the SonarEsLintPlugin specific configuration options. 
 
-###Global configuration options
+### Global configuration options
 
 <table>
 <thead>
@@ -92,7 +92,7 @@ sonar.eslint.eslintconfigpath=eslint.json
 </tbody>
 </table>
 
-###Project-level configuration options
+### Project-level configuration options
 
 <table>
 <thead>
@@ -111,12 +111,12 @@ sonar.eslint.eslintconfigpath=eslint.json
 
 ## EsLint Custom Rules
 
-To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.ts.eslintrulesdir`
+To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.eslint.eslintrulesdir`
 directory to dedicated Sonar rules for analysis.
 The configuration for a EsLint Sonar rule consists of a line declaring the EsLint rule id, a boolean switch to enable or disable the rule if needed
 and some attached properties that are used by Sonar for analysis and reporting.
 
-For example taking the `export-name` rule from the [eslint-microsoft-contrib](https://github.com/Microsoft/eslint-microsoft-contrib) package,
+For example taking the `export-name` rule from the [tslint-microsoft-contrib](https://github.com/Microsoft/tslint-microsoft-contrib) package,
 a configuration for that rule in SonarEsLintPlugin could look as follows:
 
 	export-name=true
@@ -133,13 +133,13 @@ a configuration for that rule in SonarEsLintPlugin could look as follows:
 * For documentation about the `technical debt` parameters look [here](http://docs.sonarqube.org/display/PLUG/Rule+Remediation+Costs) and [here](http://javadocs.sonarsource.org/5.2/apidocs/org/sonar/api/server/debt/DebtRemediationFunction.html)
 * For possible values for `debtType` go [here](http://javadocs.sonarsource.org/5.2/apidocs/org/sonar/api/server/rule/RulesDefinition.SubCharacteristics.html)
 
-##Licence
+## Licence
 MIT
 
-##Building
+## Building
 * Download the source
 * Build with maven, *mvn clean && mvn install*
 
-##Contributors
+## Contributors
 Thanks to the following for contributions to the plugin:
 * [Paul O'Neill](https://github.com/Pablissimo) For the original plugin for typescript
