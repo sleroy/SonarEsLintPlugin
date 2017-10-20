@@ -10,6 +10,12 @@ Basically this plugin launches EsLint and colelcts its results into SonarQube. I
 [![Build Status](https://travis-ci.org/sleroy/SonarEsLintPlugin.svg?branch=master)](https://travis-ci.org/sleroy/SonarEsLintPlugin)
 [![Coverage Status](https://coveralls.io/repos/github/sleroy/SonarEsLintPlugin/badge.svg?branch=master)](https://coveralls.io/github/sleroy/SonarEsLintPlugin?branch=master)
 
+## Changelog
+
+0.2.0 - Upgrade to the latest Sonar API and dependencies :
+* GSON 2.8.2
+* `<sslr.version>1.22</sslr.version>`
+* SonarQube API 6.5
 
 ## Overview
 
@@ -46,6 +52,7 @@ Optional steps :
 
 ## EsLint installation and configuration
 By default, SonarEsLintPlugin will look for a version of EsLint installed locally within your project (i.e. in node_modules\eslint\bin), relative to the sonar-project.properties file. This may not be what you want, so you can set this directly via the ```sonar.eslint.eslintpath``` configuration setting:
+
 * At project level
 * Globally, for all projects
 
@@ -79,7 +86,7 @@ sonar.eslint.eslintconfigpath=eslint.json
 ```
 - See the [Analysis Parameters](http://docs.sonarqube.org/display/SONAR/Analysis+Parameters) documentation page for general configuration options.
 - See the [Narrowing the Focus](http://docs.sonarqube.org/display/SONAR/Narrowing+the+Focus) documentation page for configuration options related to which files to include.
-- See the rest of this README for the SonarEsLintPlugin specific configuration options. 
+- See the rest of this README for the SonarEsLintPlugin specific configuration options.
 
 ### Global configuration options
 
