@@ -1,13 +1,13 @@
+/*
+ * Copyright (C) 2017 Sylvain Leroy - BYOS Company All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the MIT license, which unfortunately won't be
+ * written for another century.
+ *
+ * You should have received a copy of the MIT license with
+ * this file. If not, please write to: contact@sylvainleroy.com, or visit : https://sylvainleroy.com
+ */
 package io.github.sleroy.sonar;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import io.github.sleroy.sonar.api.EsLintParser;
-import io.github.sleroy.sonar.model.EsLintFile;
-import io.github.sleroy.sonar.model.EsLintIssue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.BatchSide;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,52 +17,57 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@BatchSide
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.ScannerSide;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import io.github.sleroy.sonar.api.EsLintParser;
+import io.github.sleroy.sonar.model.EsLintFile;
+import io.github.sleroy.sonar.model.EsLintIssue;
+
+@ScannerSide
 public class EsLintParserImpl implements EsLintParser {
-    private static final Logger LOG = LoggerFactory.getLogger(EsLintParserImpl.class);
+    private static final Logger	 LOG		 = LoggerFactory.getLogger(EsLintParserImpl.class);
     private static final Pattern REPLACE_PATTERN = Pattern.compile("\\]\\[");
 
     private static String getFixedUpOutput(String toParse) {
-        if (toParse.contains("][")) {
-            // Pre 4.0.0-versions of TsLint return nonsense for its JSON output
-            // when faced with multiple files so we need to fix it up before we
-            // do anything else
-            return EsLintParserImpl.REPLACE_PATTERN.matcher(toParse).replaceAll(",");
-        }
+	if (toParse.contains("][")) {
+	    // Pre 4.0.0-versions of TsLint return nonsense for its JSON output
+	    // when faced with multiple files so we need to fix it up before we
+	    // do anything else
+	    return EsLintParserImpl.REPLACE_PATTERN.matcher(toParse).replaceAll(",");
+	}
 
-        return toParse;
+	return toParse;
     }
 
     @Override
     public Map<String, List<EsLintIssue>> parse(List<String> toParse) {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
+	final GsonBuilder builder = new GsonBuilder();
+	final Gson gson = builder.create();
 
-        List<EsLintFile> allScannedFiles = new ArrayList<>(100);
+	final List<EsLintFile> allScannedFiles = new ArrayList<>(100);
 
-        for (String batch : toParse) {
-            EsLintFile[] batchIssues = gson.fromJson(EsLintParserImpl.getFixedUpOutput(batch), EsLintFile[].class);
+	for (final String batch : toParse) {
+	    final EsLintFile[] batchIssues = gson.fromJson(EsLintParserImpl.getFixedUpOutput(batch), EsLintFile[].class);
 
-            if (batchIssues == null) {
-                continue;
-            }
-            allScannedFiles.addAll(Arrays.asList(batchIssues));
-        }
+	    if (batchIssues == null) {
+		continue;
+	    }
+	    allScannedFiles.addAll(Arrays.asList(batchIssues));
+	}
 
-        // Remap by filename
-        Map<String, List<EsLintFile>> fileBag = allScannedFiles.stream()
-                .collect(Collectors.groupingBy(f -> f.getFilePath().replace('\\', '/')));
+	// Remap by filename
+	final Map<String, List<EsLintFile>> fileBag = allScannedFiles
+		.stream().collect(Collectors.groupingBy(f -> f.getFilePath().replace('\\', '/')));
 
-        // Reduce all issues
-        Map<String, List<EsLintIssue>> toIssues = fileBag.entrySet().stream().collect(Collectors.toMap(
-                Entry::getKey,
-                v -> v.getValue().stream()
-                        .map(EsLintFile::getMessages)
-                        .flatMap(List::stream)
-                        .collect(Collectors.toList())
-        ));
+	// Reduce all issues
+	final Map<String, List<EsLintIssue>> toIssues = fileBag.entrySet().stream().collect(Collectors.toMap(
+		Entry::getKey, v -> v.getValue().stream().map(EsLintFile::getMessages).flatMap(List::stream).collect(Collectors.toList())));
 
-
-        return toIssues;
+	return toIssues;
     }
 }
