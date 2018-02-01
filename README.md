@@ -1,9 +1,9 @@
 SonarEsLintPlugin
 =============
 
-SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarEsLintPlugin](https://github.com/Pablissimo/SonarEsLintPlugin)
+SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarTsPlugin](https://github.com/Pablissimo/SonarTsPlugin)
 
-Download [https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar](the plugin)
+Download [the plugin](https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar).
 
 Basically this plugin launches EsLint and colelcts its results into SonarQube. It may be slower than the own SonarQube javascript parser that I recommend to use for most usages. However if you are interested by AngularJS coding rules, uses my plugin :-)
 
@@ -15,8 +15,7 @@ Basically this plugin launches EsLint and colelcts its results into SonarQube. I
 0.2.0 - Upgrade to the latest Sonar API and dependencies :
 * GSON 2.8.2
 * `<sslr.version>1.22</sslr.version>`
-*
-
+* SonarQube API 6.5
 
 ## Overview
 
@@ -52,13 +51,14 @@ Optional steps :
 
 
 ## EsLint installation and configuration
-By default, SonarEsLintPlugin will look for a version of EsLint installed locally within your project (i.e. in node_modules\eslint\bin), relative to the sonar-project.properties file. This may not be what you want, so you can set this directly via the ```sonar.ts.eslintpath``` configuration setting:
+By default, SonarEsLintPlugin will look for a version of EsLint installed locally within your project (i.e. in node_modules\eslint\bin), relative to the sonar-project.properties file. This may not be what you want, so you can set this directly via the ```sonar.eslint.eslintpath``` configuration setting:
+
 * At project level
 * Globally, for all projects
 
 If analysis is failing, run ```sonar-runner``` with the ```-X -e``` options for more diagnostic information, including a note of where the plugin is searching for ```eslint```. Bear in mind that if running on a build server, the account running the build will need access to the path to ```eslint```.
 
-By default, SonarEsLintPlugin will look for a EsLint configuration file called eslint.json next to the sonar-project.properties file. You can override this using the ```sonar.ts.eslintconfigpath``` configuration setting if this isn't the case for your project.
+By default, SonarEsLintPlugin will look for a EsLint configuration file called eslint.json next to the sonar-project.properties file. You can override this using the ```sonar.eslint.eslintconfigpath``` configuration setting if this isn't the case for your project.
 
 Here an configuration example for .eslintrc.json
 
@@ -118,12 +118,12 @@ sonar.eslint.eslintconfigpath=eslint.json
 
 ## EsLint Custom Rules
 
-To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.ts.eslintrulesdir`
+To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.eslint.eslintrulesdir`
 directory to dedicated Sonar rules for analysis.
 The configuration for a EsLint Sonar rule consists of a line declaring the EsLint rule id, a boolean switch to enable or disable the rule if needed
 and some attached properties that are used by Sonar for analysis and reporting.
 
-For example taking the `export-name` rule from the [eslint-microsoft-contrib](https://github.com/Microsoft/eslint-microsoft-contrib) package,
+For example taking the `export-name` rule from the [tslint-microsoft-contrib](https://github.com/Microsoft/tslint-microsoft-contrib) package,
 a configuration for that rule in SonarEsLintPlugin could look as follows:
 
 	export-name=true
