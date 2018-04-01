@@ -14,6 +14,7 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
+ 
 0.2.0 - Upgrade to the latest Sonar API and dependencies :
 * GSON 2.8.2
 * `<sslr.version>1.22</sslr.version>`
