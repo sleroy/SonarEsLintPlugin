@@ -5,13 +5,15 @@ SonarQube plugin for EsLint linter and its extensions. The code is based on the 
 
 Download [the plugin](https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar).
 
-Basically this plugin launches EsLint and colelcts its results into SonarQube. It may be slower than the own SonarQube javascript parser that I recommend to use for most usages. However if you are interested by AngularJS coding rules, uses my plugin :-)
+Basically this plugin launches EsLint and collects its results into SonarQube. It may be slower than the own SonarQube javascript parser that I recommend to use for most usages. However if you are interested by AngularJS coding rules, uses my plugin :-)
 
 [![Build Status](https://travis-ci.org/sleroy/SonarEsLintPlugin.svg?branch=master)](https://travis-ci.org/sleroy/SonarEsLintPlugin)
 [![Coverage Status](https://coveralls.io/repos/github/sleroy/SonarEsLintPlugin/badge.svg?branch=master)](https://coveralls.io/github/sleroy/SonarEsLintPlugin?branch=master)
 
 ## Changelog
 
+0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
+ * SonarQube API 6.7
 0.2.0 - Upgrade to the latest Sonar API and dependencies :
 * GSON 2.8.2
 * `<sslr.version>1.22</sslr.version>`
@@ -19,9 +21,11 @@ Basically this plugin launches EsLint and colelcts its results into SonarQube. I
 
 ## Overview
 
-This is plugin for SonarQube 5.6+ for analysing projects with Javascript content that supports:
+This is plugin for SonarQube **6.7** for analysing projects with Javascript content that supports:
 * EsLint for code quality information
 * EsLint AngularJS extension
+
+**Notice** : The plugin is known to not work with **SonarQube 7.+** since the latest version of SonarQube has made significant changes on the Plugin API. I am working on it.
 
 **Notice**: if you disagree with the severity evaluation of the EsLint rules inside SonarQube that I provided, please send a P/R on the file `eslint-rules.properties`.
 
