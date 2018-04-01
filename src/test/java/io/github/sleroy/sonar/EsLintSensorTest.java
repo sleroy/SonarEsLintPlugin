@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2017 Sylvain Leroy - BYOS Company All Rights Reserved
+ * Copyright (C) 2017 Sylvain Leroy - BYOSkill Company All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license, which unfortunately won't be
  * written for another century.
  *
  * You should have received a copy of the MIT license with
- * this file. If not, please write to: contact@sylvainleroy.com, or visit : https://sylvainleroy.com
+ * this file. If not, please write to: sleroy at byoskill.com, or visit : www.byoskill.com
+ * 
  */
 package io.github.sleroy.sonar;
 
@@ -73,6 +74,53 @@ public class EsLintSensorTest {
 	assertEquals(0, context.allIssues().size());
     }
 
+    @Before
+    public void before() throws Exception {
+	fakePathResolutions = new HashMap<>();
+	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_PATH, "/path/to/eslint");
+	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_CONFIG_PATH, "src/test/resources/.eslintrc.js");
+	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_RULES_DIR, "/path/to/rules");
+
+	settings = mock(Configuration.class);
+	when(settings.getInt(EsLintPlugin.SETTING_ES_LINT_TIMEOUT)).thenReturn(Optional.of(45000));
+	when(settings.getBoolean(EsLintPlugin.SETTING_ES_LINT_ENABLED)).thenReturn(Optional.of(true));
+	executor = mock(EsLintExecutor.class);
+	parser = mock(EsLintParser.class);
+
+	resolver = mock(PathResolver.class);
+	sensor = spy(new EsLintSensor(settings, resolver, executor, parser));
+
+	file = TestInputFileBuilder
+		.create("", "path/to/file").setLanguage(EsLintLanguage.LANGUAGE_KEY).setLines(1).setLastValidOffset(999)
+		.setOriginalLineOffsets(new int[] { 5 }).build();
+
+	typeDefFile = TestInputFileBuilder
+		.create("", "path/to/file.d.ts").setLanguage(EsLintLanguage.LANGUAGE_KEY).setLines(1)
+		.setLastValidOffset(999)
+		.setOriginalLineOffsets(new int[] { 5 }).build();
+
+	context = SensorContextTester.create(new File(""));
+	context.fileSystem().add(file);
+	context.fileSystem().add(typeDefFile);
+
+	final ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
+	rulesBuilder.create(RuleKey.of(EsRulesDefinition.REPOSITORY_NAME, "rule name")).activate();
+
+	context.setActiveRules(rulesBuilder.build());
+
+	// Pretend all paths are absolute
+	final Answer<Optional<String>> lookUpFakePath = invocation -> Optional
+		.ofNullable(fakePathResolutions.get(invocation.<String>getArgument(1)));
+	doAnswer(lookUpFakePath).when(resolver).getPathFromSetting(any(SensorContext.class), any(String.class), any());
+
+	// Pretend all paths are absolute
+	final Answer<Optional<String>> lookUpFakePath2 = invocation -> Optional
+		.ofNullable(fakePathResolutions.get(invocation.<String>getArgument(1)));
+	doAnswer(lookUpFakePath2).when(resolver).getPathFromSetting(any(SensorContext.class), any(String.class));
+
+	configCaptor = ArgumentCaptor.forClass(EsLintExecutorConfig.class);
+    }
+
     @Test
     public void describe_setsLanguage() {
 	final DefaultSensorDescriptor desc = new DefaultSensorDescriptor();
@@ -130,7 +178,8 @@ public class EsLintSensorTest {
 	sensor.execute(context);
 
 	assertEquals(1, context.allIssues().size());
-	assertEquals(EsRulesDefinition.ESLINT_UNKNOWN_RULE.getKey(), context.allIssues().iterator().next().ruleKey().rule());
+	assertEquals(EsRulesDefinition.ESLINT_UNKNOWN_RULE.getKey(),
+		context.allIssues().iterator().next().ruleKey().rule());
     }
 
     @Test
@@ -225,51 +274,5 @@ public class EsLintSensorTest {
 	verify(executor, times(0)).execute(any(EsLintExecutorConfig.class), any(List.class));
 
 	assertEquals(0, context.allIssues().size());
-    }
-
-    @Before
-    public void setUp() throws Exception {
-	fakePathResolutions = new HashMap<>();
-	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_PATH, "/path/to/eslint");
-	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_CONFIG_PATH, "src/test/resources/.eslintrc.js");
-	fakePathResolutions.put(EsLintPlugin.SETTING_ES_LINT_RULES_DIR, "/path/to/rules");
-
-	settings = mock(Configuration.class);
-	when(settings.getInt(EsLintPlugin.SETTING_ES_LINT_TIMEOUT)).thenReturn(Optional.of(45000));
-	when(settings.getBoolean(EsLintPlugin.SETTING_ES_LINT_ENABLED)).thenReturn(Optional.of(true));
-	executor = mock(EsLintExecutor.class);
-	parser = mock(EsLintParser.class);
-
-	resolver = mock(PathResolver.class);
-	sensor = spy(new EsLintSensor(settings, resolver, executor, parser));
-
-	file = TestInputFileBuilder
-		.create("", "path/to/file").setLanguage(EsLintLanguage.LANGUAGE_KEY).setLines(1).setLastValidOffset(999)
-		.setOriginalLineOffsets(new int[] { 5 }).build();
-
-	typeDefFile = TestInputFileBuilder
-		.create("", "path/to/file.d.ts").setLanguage(EsLintLanguage.LANGUAGE_KEY).setLines(1).setLastValidOffset(999)
-		.setOriginalLineOffsets(new int[] { 5 }).build();
-
-	context = SensorContextTester.create(new File(""));
-	context.fileSystem().add(file);
-	context.fileSystem().add(typeDefFile);
-
-	final ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
-	rulesBuilder.create(RuleKey.of(EsRulesDefinition.REPOSITORY_NAME, "rule name")).activate();
-
-	context.setActiveRules(rulesBuilder.build());
-
-	// Pretend all paths are absolute
-	final Answer<Optional<String>> lookUpFakePath = invocation -> Optional
-		.ofNullable(fakePathResolutions.get(invocation.<String>getArgument(1)));
-	doAnswer(lookUpFakePath).when(resolver).getPathFromSetting(any(SensorContext.class), any(String.class), any());
-
-	// Pretend all paths are absolute
-	final Answer<Optional<String>> lookUpFakePath2 = invocation -> Optional
-		.ofNullable(fakePathResolutions.get(invocation.<String>getArgument(1)));
-	doAnswer(lookUpFakePath2).when(resolver).getPathFromSetting(any(SensorContext.class), any(String.class));
-
-	configCaptor = ArgumentCaptor.forClass(EsLintExecutorConfig.class);
     }
 }
