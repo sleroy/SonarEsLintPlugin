@@ -178,7 +178,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- UTF-8 bundles are not supported by Java, so they must be converted
+				<!-- UTF-8 bundles are not supported by Java, so they must be converted 
 					during build -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>native2ascii-maven-plugin</artifactId>
@@ -210,6 +210,26 @@
 					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>de.jutzig</groupId>
+				<artifactId>github-release-plugin</artifactId>
+				<version>1.1.1</version>
+				<configuration>
+					<description>SonarESLint plugin release</description>
+					<releaseName>Release ${project.version}</releaseName>
+					<tag>release-${project.version}</tag>
+					<fileSets>
+						<fileSet>
+							<directory>${project.build.directory}</directory>
+							<includes>
+								<include>${project.artifactId}*.jar</include>
+							</includes>
+						</fileSet>
+					</fileSets>
+				</configuration>
+
+			</plugin>
+
 		</plugins>
 	</build>
 
