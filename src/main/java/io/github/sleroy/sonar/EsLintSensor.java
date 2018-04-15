@@ -93,7 +93,7 @@ public class EsLintSensor implements Sensor {
 	    return;
 	}
 
-	final EsLintExecutorConfig config = EsLintExecutorConfig.fromSettings(ctx, resolver);
+	final EsLintExecutorConfig config = EsLintExecutorConfigFactory.fromSettings(ctx, resolver);
 
 	if (config.getPathToEsLint() == null) {
 	    LOG.warn("Path to eslint not defined or not found. Skipping eslint analysis.");
