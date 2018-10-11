@@ -7,7 +7,7 @@
 	<groupId>org.github.sleroy.io</groupId>
 	<artifactId>sonar-eslint-plugin</artifactId>
 	<packaging>sonar-plugin</packaging>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 
 	<name>ESLint</name>
 	<description>Analyse ESLint projects</description>
