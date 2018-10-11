@@ -29,6 +29,8 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 This is plugin for SonarQube **6.7** for analysing projects with Javascript content that supports:
 * EsLint for code quality information
 * EsLint AngularJS extension
+* EsLint Security extension
+* EsLint Cross-Site Scripting extension
 
 **Notice** : The plugin is known to not work with **SonarQube 7.+** since the latest version of SonarQube has made significant changes on the Plugin API. I am working on it.
 
