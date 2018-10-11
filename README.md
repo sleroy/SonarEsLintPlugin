@@ -12,6 +12,10 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 
 ## Changelog
 
+0.3.1 - Added the rules for security and cross site scripting defined in the Eslint plugins: 
+ * https://www.npmjs.com/package/eslint-plugin-security
+ * https://www.npmjs.com/package/eslint-plugin-xss
+
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
  
