@@ -69,9 +69,25 @@ public class EsRulesDefinition implements RulesDefinition {
 	    }
 
 	    final String ruleId = propKey;
-	    final String ruleName = properties.getProperty(propKey + ".name", ruleId.replace("-", " "));
+
+        String tags = properties.getProperty(propKey + ".tags", EsRulesDefinition.DEFAULT_TAGS);
+
+        final String ruleName = properties.getProperty(propKey + ".name", ruleId.replace("-", " "));
 	    final String ruleSeverity = properties.getProperty(propKey + ".severity", EsRulesDefinition.DEFAULT_RULE_SEVERITY);
-	    final String ruleDescription = properties.getProperty(propKey + ".description", EsRulesDefinition.DEFAULT_RULE_DESCRIPTION);
+
+        String defaultRuleDescriptionValue = EsRulesDefinition.DEFAULT_RULE_DESCRIPTION;
+
+        if (ruleId.indexOf("/") < 0) {
+            defaultRuleDescriptionValue = "See full Eslint rule description on the following link: https://eslint.org/docs/rules/" + ruleId;
+        } else if (ruleId.indexOf("angular/") == 0) {
+            tags += ",eslint-angular";
+            defaultRuleDescriptionValue = "See full Eslint angular rule description on the following link: https://github.com/Gillespie59/eslint-plugin-angular/blob/master/docs/rules/" + ruleId.substring(8);
+        } else if (ruleId.indexOf("/") >= 0) {
+            tags += ",eslint-" + ruleId.substring(0, ruleId.indexOf("/"));
+        }
+
+        final String ruleDescription = properties.getProperty(propKey + ".description", defaultRuleDescriptionValue);
+
 
 	    final String debtRemediationFunction = properties.getProperty(propKey + ".debtFunc", null);
 	    final String debtRemediationScalar = properties
@@ -79,54 +95,53 @@ public class EsRulesDefinition implements RulesDefinition {
 	    final String debtRemediationOffset = properties
 		    .getProperty(propKey + ".debtOffset", EsRulesDefinition.DEFAULT_RULE_DEBT_OFFSET);
 	    final String debtType = properties.getProperty(propKey + ".debtType", EsRulesDefinition.DEFAULT_RULE_DEBT_TYPE);
-	    final String tags = properties.getProperty(propKey + ".tags", EsRulesDefinition.DEFAULT_TAGS);
 
-	    EsLintRule tsRule = null;
+	    EsLintRule eslintRule = null;
 
 	    // try to apply the specified debt remediation function
 	    if (debtRemediationFunction != null) {
 		final Type debtRemediationFunctionEnum = Type.valueOf(debtRemediationFunction);
 
-		tsRule = new EsLintRule(
+		eslintRule = new EsLintRule(
 			ruleId, ruleSeverity, ruleName, ruleDescription, debtRemediationFunctionEnum, debtRemediationScalar,
 			debtRemediationOffset, debtType, tags);
 
 	    }
 
 	    // no debt remediation function specified
-	    if (tsRule == null) {
-		tsRule = new EsLintRule(ruleId, ruleSeverity, ruleName, ruleDescription, tags);
+	    if (eslintRule == null) {
+		eslintRule = new EsLintRule(ruleId, ruleSeverity, ruleName, ruleDescription, tags);
 	    }
-	    tsRule.setHtmlDescription(ruleDescription);
-	    rulesCollection.add(tsRule);
+	    eslintRule.setHtmlDescription(ruleDescription);
+	    rulesCollection.add(eslintRule);
 	}
 
 	rulesCollection.sort((final EsLintRule r1, final EsLintRule r2) -> r1.getKey().compareTo(r2.getKey()));
     }
 
-    private static void createRule(RulesDefinition.NewRepository repository, EsLintRule tsRule) {
+    private static void createRule(RulesDefinition.NewRepository repository, EsLintRule eslintRule) {
 	final RulesDefinition.NewRule sonarRule = repository
-		.createRule(tsRule.getKey()).setName(tsRule.getName()).setSeverity(tsRule.getSeverity())
-		.setHtmlDescription(tsRule.getHtmlDescription()).setStatus(RuleStatus.READY).setTags(tsRule.getTagsAsArray());
+		.createRule(eslintRule.getKey()).setName(eslintRule.getName()).setSeverity(eslintRule.getSeverity())
+		.setHtmlDescription(eslintRule.getHtmlDescription()).setStatus(RuleStatus.READY).setTags(eslintRule.getTagsAsArray());
 
-	if (tsRule.isHasDebtRemediation()) {
+	if (eslintRule.isHasDebtRemediation()) {
 	    DebtRemediationFunction debtRemediationFn = null;
 	    final RulesDefinition.DebtRemediationFunctions funcs = sonarRule.debtRemediationFunctions();
 
-	    switch (tsRule.getDebtRemediationFunction()) {
+	    switch (eslintRule.getDebtRemediationFunction()) {
 	    case LINEAR:
-		debtRemediationFn = funcs.linear(tsRule.getDebtRemediationScalar());
+		debtRemediationFn = funcs.linear(eslintRule.getDebtRemediationScalar());
 		break;
 
 	    case LINEAR_OFFSET:
-		debtRemediationFn = funcs.linearWithOffset(tsRule.getDebtRemediationScalar(), tsRule.getDebtRemediationOffset());
+		debtRemediationFn = funcs.linearWithOffset(eslintRule.getDebtRemediationScalar(), eslintRule.getDebtRemediationOffset());
 		break;
 
 	    case CONSTANT_ISSUE:
-		debtRemediationFn = funcs.constantPerIssue(tsRule.getDebtRemediationScalar());
+		debtRemediationFn = funcs.constantPerIssue(eslintRule.getDebtRemediationScalar());
 		break;
 	    default:
-		throw new UnsupportedOperationException("Unknown debt evaluation function " + tsRule.getDebtRemediationFunction());
+		throw new UnsupportedOperationException("Unknown debt evaluation function " + eslintRule.getDebtRemediationFunction());
 	    }
 
 	    sonarRule.setDebtRemediationFunction(debtRemediationFn);
@@ -134,11 +149,11 @@ public class EsRulesDefinition implements RulesDefinition {
 
 	RuleType type = null;
 
-	if (tsRule.getDebtType() != null && RuleType.names().contains(tsRule.getDebtType())) {
+	if (eslintRule.getDebtType() != null && RuleType.names().contains(eslintRule.getDebtType())) {
 	    // Try and parse it as a new-style rule type (since 5.5 SQALE's been
 	    // replaced
 	    // with something simpler, and there's really only three buckets)
-	    type = RuleType.valueOf(tsRule.getDebtType());
+	    type = RuleType.valueOf(eslintRule.getDebtType());
 	}
 
 	if (type == null) {
