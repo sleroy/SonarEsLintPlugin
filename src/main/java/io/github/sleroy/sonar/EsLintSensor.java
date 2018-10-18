@@ -180,7 +180,7 @@ public class EsLintSensor implements Sensor {
 	}
 	final boolean isNotRecognizedRule = issue.getRuleId() == null || !ruleNames.contains(ruleName);
 	if (isNotRecognizedRule) {
-	    LOG.trace("Rule {} has not yet being defined into the EsLint plugin", ruleName);
+	    LOG.info("Rule {} has not yet being defined into the EsLint plugin", ruleName);
 	    ruleName = EsRulesDefinition.ESLINT_UNKNOWN_RULE.getKey();
 	}
 	return ruleName;
