@@ -12,9 +12,11 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 
 ## Changelog
 
+0.3.1 - Add eslint url on issue description and modify Natura quality rules severity evaluates
+
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
- 
+
 0.2.0 - Upgrade to the latest Sonar API and dependencies :
 * GSON 2.8.2
 * `<sslr.version>1.22</sslr.version>`
@@ -155,3 +157,5 @@ MIT
 ## Contributors
 Thanks to the following for contributions to the plugin:
 * [Paul O'Neill](https://github.com/Pablissimo) For the original plugin for typescript
+* [Sylvain Leroy](https://github.com/sleroy/SonarEsLintPlugin) For the original plugin for eslint
+* [Julien Roche](https://github.com/rochejul/SonarEsLintPlugin) For the patches to add eslint rules descriptions
