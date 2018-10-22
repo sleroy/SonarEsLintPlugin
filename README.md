@@ -1,20 +1,19 @@
 SonarEsLintPlugin
 =============
 
-SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarTsPlugin](https://github.com/Pablissimo/SonarTsPlugin)
+SonarQube plugin for EsLint linter and its extensions. The code is based on the Eslint plugin published by sleroy. [https://github.com/sleroy/SonarEsLintPlugin](hhttps://github.com/sleroy/SonarEsLintPlugin)
 
-Download [the plugin](https://github.com/sleroy/SonarEsLintPlugin/releases/download/v0.1.1/sonar-eslint-plugin-0.1.1.jar).
+Download [the plugin](https://github.com/natura-cosmeticos/SonarEsLintPlugin/releases/download/v0.3.1/sonar-eslint-plugin-0.3.1.jar).
 
-Basically this plugin launches EsLint and collects its results into SonarQube. It may be slower than the own SonarQube javascript parser that I recommend to use for most usages. However if you are interested by AngularJS coding rules, uses my plugin :-)
-
-[![Build Status](https://travis-ci.org/sleroy/SonarEsLintPlugin.svg?branch=master)](https://travis-ci.org/sleroy/SonarEsLintPlugin)
-[![Coverage Status](https://coveralls.io/repos/github/sleroy/SonarEsLintPlugin/badge.svg?branch=master)](https://coveralls.io/github/sleroy/SonarEsLintPlugin?branch=master)
+Basically this plugin joins the EsLint static analysis of the sleroy plugin with the description improvement of lint issues made by rochejul. Also adds new quality rules and updating some severities.
 
 ## Changelog
 
+0.3.1 - Add eslint url on issue description and modify Natura quality rules severity evaluates
+
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
- 
+
 0.2.0 - Upgrade to the latest Sonar API and dependencies :
 * GSON 2.8.2
 * `<sslr.version>1.22</sslr.version>`
@@ -131,14 +130,14 @@ and some attached properties that are used by Sonar for analysis and reporting.
 For example taking the `export-name` rule from the [tslint-microsoft-contrib](https://github.com/Microsoft/tslint-microsoft-contrib) package,
 a configuration for that rule in SonarEsLintPlugin could look as follows:
 
-	export-name=true
-	export-name.name=The name of the exported module must match the filename of the source file.
-	export-name.severity=MAJOR
-	export-name.description=This is case-sensitive but ignores file extension. Since version 1.0, this rule takes a list of regular expressions as a parameter. Any export name matching that regular expression will be ignored.
-	export-name.debtFunc=LINEAR_OFFSET
-	export-name.debtScalar=15min
-	export-name.debtOffset=1h
-	export-name.debtType=HARDWARE_RELATED_PORTABILITY
+    export-name=true
+    export-name.name=The name of the exported module must match the filename of the source file.
+    export-name.severity=MAJOR
+    export-name.description=This is case-sensitive but ignores file extension. Since version 1.0, this rule takes a list of regular expressions as a parameter. Any export name matching that regular expression will be ignored.
+    export-name.debtFunc=LINEAR_OFFSET
+    export-name.debtScalar=15min
+    export-name.debtOffset=1h
+    export-name.debtType=HARDWARE_RELATED_PORTABILITY
 
 **You will need to restart the SonarQube server after configuring custom rules this way before subsequent analyses will pick them up. You will also need to activate the new rules after restart for any quality profile you want them to participate in - by default they will be disabled.**
 
@@ -155,3 +154,5 @@ MIT
 ## Contributors
 Thanks to the following for contributions to the plugin:
 * [Paul O'Neill](https://github.com/Pablissimo) For the original plugin for typescript
+* [Sylvain Leroy](https://github.com/sleroy/SonarEsLintPlugin) For the original plugin for eslint
+* [Julien Roche](https://github.com/rochejul/SonarEsLintPlugin) For the patches to add eslint rules descriptions
