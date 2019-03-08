@@ -15,6 +15,9 @@ We don't have plans to add those changes in the original plugin, but if we creat
 
 ## Changelog
 
+0.3.2 - Added --no-inline-config to the eslint arguments, ensuring that even the eslint-disable comments will be
+registered
+
 0.3.1 - Add eslint url on issue description and modify Natura quality rules severity evaluates
 
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
