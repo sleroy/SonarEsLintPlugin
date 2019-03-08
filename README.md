@@ -12,8 +12,10 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 
 ## Changelog
 
-0.3.1 - Added --no-inline-config to the eslint arguments, ensuring that even the eslint-disable comments will be
+0.3.2 - Added --no-inline-config to the eslint arguments, ensuring that even the eslint-disable comments will be
 registered
+
+0.3.1 - Added configure-eslint-natura-rules
 
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
