@@ -60,6 +60,9 @@ public class EsLintExecutorImpl implements EsLintExecutor {
                 .addArgument("-f")
                 .addArgument("json");
 
+        //Add argument to eslint ignore the eslint-disable comments
+        command.addArgument("--no-inline-config");
+
         String rulesDir = config.getRulesDir();
         if (rulesDir != null && !rulesDir.isEmpty()) {
             command
