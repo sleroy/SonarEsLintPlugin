@@ -1,11 +1,17 @@
 SonarEsLintPlugin
 =============
 
-SonarQube plugin for EsLint linter and its extensions. The code is based on the Eslint plugin published by sleroy. [https://github.com/sleroy/SonarEsLintPlugin](hhttps://github.com/sleroy/SonarEsLintPlugin)
+SonarQube plugin for EsLint linter and its extensions. The code is based on the Eslint plugin published by sleroy. [https://github.com/sleroy/SonarEsLintPlugin](https://github.com/sleroy/SonarEsLintPlugin)
 
 Download [the plugin](https://github.com/natura-cosmeticos/SonarEsLintPlugin/releases/download/v0.3.1/sonar-eslint-plugin-0.3.1.jar).
 
 Basically this plugin joins the EsLint static analysis of the sleroy plugin with the description improvement of lint issues made by rochejul. Also adds new quality rules and updating some severities.
+
+## Why we forked
+
+This fork was initially necessary to change some severities and add new rules.
+
+We don't have plans to add those changes in the original plugin, but if we create new feats we intend to send to it.
 
 ## Changelog
 
