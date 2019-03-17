@@ -7,7 +7,7 @@
 	<groupId>org.github.sleroy.io</groupId>
 	<artifactId>sonar-eslint-plugin</artifactId>
 	<packaging>sonar-plugin</packaging>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 
 	<name>ESLint</name>
 	<description>Analyse ESLint projects</description>
@@ -178,7 +178,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- UTF-8 bundles are not supported by Java, so they must be converted 
+				<!-- UTF-8 bundles are not supported by Java, so they must be converted
 					during build -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>native2ascii-maven-plugin</artifactId>

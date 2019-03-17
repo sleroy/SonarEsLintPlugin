@@ -109,7 +109,7 @@ public class EsLintRuleProfileTest {
 			"angular-document-service", "angular-foreach", "angular-interval-service", "angular-json-functions", "angular-log",
 			"angular-no-angular-mock", "angular-no-jquery-angularelement", "angular-timeout-service", "angular-typecheck-array",
 			"angular-typecheck-date", "angular-typecheck-function", "angular-typecheck-number", "angular-typecheck-object",
-			"angular-typecheck-string", "angular-window-service", "angular-on-destroy"));
+			"angular-typecheck-string", "angular-window-service", "angular-on-destroy", "disable-checker-disable-comment"));
     }
 
     @After
