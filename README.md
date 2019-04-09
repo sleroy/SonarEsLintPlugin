@@ -1,5 +1,12 @@
-SonarEsLintPlugin
+SonarEsLintPlugin (deprecated)
 =============
+
+It seems that SonarJS now supports the import of an eslint result.json:
+https://docs.sonarqube.org/display/PLUG/Importing+ESLint+Issues+Reports
+
+This plugin will not receive updates now.
+
+==========================
 
 SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarTsPlugin](https://github.com/Pablissimo/SonarTsPlugin)
 
