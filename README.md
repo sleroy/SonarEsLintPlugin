@@ -1,5 +1,12 @@
-SonarEsLintPlugin
+SonarEsLintPlugin (deprecated)
 =============
+
+It seems that SonarJS now supports the import of an eslint result.json:
+https://docs.sonarqube.org/display/PLUG/Importing+ESLint+Issues+Reports
+
+This plugin will not receive updates now.
+
+==========================
 
 SonarQube plugin for EsLint linter and its extensions. The code is based on the TypeScript plugin published by Pablissimo. [https://github.com/Pablissimo/SonarTsPlugin](https://github.com/Pablissimo/SonarTsPlugin)
 
@@ -11,10 +18,6 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 [![Coverage Status](https://coveralls.io/repos/github/sleroy/SonarEsLintPlugin/badge.svg?branch=master)](https://coveralls.io/github/sleroy/SonarEsLintPlugin?branch=master)
 
 ## Changelog
-
-0.3.1 - Added the rules for security and cross site scripting defined in the Eslint plugins: 
- * https://www.npmjs.com/package/eslint-plugin-security
- * https://www.npmjs.com/package/eslint-plugin-xss
 
 0.3.0 - Upgrade to the latest Sonar API and dependencies and fix an issue (#2) when ESLint is meeting parsing errors or simply ignoring files.
  * SonarQube API 6.7
@@ -29,8 +32,6 @@ Basically this plugin launches EsLint and collects its results into SonarQube. I
 This is plugin for SonarQube **6.7** for analysing projects with Javascript content that supports:
 * EsLint for code quality information
 * EsLint AngularJS extension
-* EsLint Security extension
-* EsLint Cross-Site Scripting extension
 
 **Notice** : The plugin is known to not work with **SonarQube 7.+** since the latest version of SonarQube has made significant changes on the Plugin API. I am working on it.
 
@@ -161,3 +162,4 @@ MIT
 ## Contributors
 Thanks to the following for contributions to the plugin:
 * [Paul O'Neill](https://github.com/Pablissimo) For the original plugin for typescript
+
