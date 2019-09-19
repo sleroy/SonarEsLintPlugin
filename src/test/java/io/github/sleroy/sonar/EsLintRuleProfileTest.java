@@ -109,7 +109,12 @@ public class EsLintRuleProfileTest {
 			"angular-document-service", "angular-foreach", "angular-interval-service", "angular-json-functions", "angular-log",
 			"angular-no-angular-mock", "angular-no-jquery-angularelement", "angular-timeout-service", "angular-typecheck-array",
 			"angular-typecheck-date", "angular-typecheck-function", "angular-typecheck-number", "angular-typecheck-object",
-			"angular-typecheck-string", "angular-window-service", "angular-on-destroy"));
+			"angular-typecheck-string", "angular-window-service", "angular-on-destroy", 
+			"security-detect-unsafe-regex", "security-detect-buffer-noassert", "security-detect-child-process", 
+			"security-detect-disable-mustache-escape", "security-detect-eval-with-expression", "security-detect-no-csrf-before-method-override", 
+			"security-detect-non-literal-fs-filename", "security-detect-non-literal-regexp", "security-detect-non-literal-require", 
+			"security-detect-object-injection", "security-detect-possible-timing-attacks", "security-detect-pseudoRandomBytes",
+			"xss-no-mixed-html", "xss-no-location-href-assign"));
     }
 
     @After

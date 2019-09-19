@@ -162,3 +162,4 @@ MIT
 ## Contributors
 Thanks to the following for contributions to the plugin:
 * [Paul O'Neill](https://github.com/Pablissimo) For the original plugin for typescript
+
