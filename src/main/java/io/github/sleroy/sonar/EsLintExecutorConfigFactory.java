@@ -23,43 +23,41 @@ import io.github.sleroy.sonar.api.PathResolver;
 public class EsLintExecutorConfigFactory {
 
     private static int evaluateTimeoutSetting(final SensorContext ctx) {
-	return Math.max(
-		EsLintExecutorConfig.MAX_TIMEOUT,
-		ctx.config().getInt(EsLintPlugin.SETTING_ES_LINT_TIMEOUT).orElse(EsLintExecutorConfig.MAX_TIMEOUT));
+        return Math.max(
+            EsLintExecutorConfig.MAX_TIMEOUT,
+            ctx.config().getInt(EsLintPlugin.SETTING_ES_LINT_TIMEOUT).orElse(EsLintExecutorConfig.MAX_TIMEOUT));
     }
 
     /**
      * Buildsw the configuration from the settings.
      *
-     * @param ctx
-     *            the ctx
-     * @param resolver
-     *            the resolver
+     * @param ctx      the ctx
+     * @param resolver the resolver
      * @return the es lint executor config
      */
     public static EsLintExecutorConfig fromSettings(final SensorContext ctx, final PathResolver resolver) {
-	final EsLintExecutorConfig toReturn = new EsLintExecutorConfig();
+        final EsLintExecutorConfig toReturn = new EsLintExecutorConfig();
 
-	resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_PATH, EsLintExecutorConfig.ESLINT_FALLBACK_PATH)
-		.ifPresent(f -> toReturn.setPathToEsLint(f));
+        resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_PATH, EsLintExecutorConfig.ESLINT_FALLBACK_PATH)
+            .ifPresent(f -> toReturn.setPathToEsLint(f));
 
-	try (Stream<Optional<String>> stream = Stream.of(
-		resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_CONFIG_PATH),
-		resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_FILENAME),
-		resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_JS_FILENAME),
-		resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_JSON_FILENAME),
-		resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_YAML2_FILENAME),
-		resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_YAML_FILENAME))) {
-	    stream.filter(Optional::isPresent).map(Optional::get).findFirst()
-		    .ifPresent(path -> toReturn.setConfigFile(path));
-	}
+        try (Stream<Optional<String>> stream = Stream.of(
+            resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_CONFIG_PATH),
+            resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_FILENAME),
+            resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_JS_FILENAME),
+            resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_JSON_FILENAME),
+            resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_YAML2_FILENAME),
+            resolver.getAbsolutePath(ctx, EsLintExecutorConfig.CONFIG_YAML_FILENAME))) {
+            stream.filter(Optional::isPresent).map(Optional::get).findFirst()
+                .ifPresent(path -> toReturn.setConfigFile(path));
+        }
 
-	resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_RULES_DIR, null)
-		.ifPresent(path -> toReturn.setRulesDir(path));
+        resolver.getPathFromSetting(ctx, EsLintPlugin.SETTING_ES_LINT_RULES_DIR, null)
+            .ifPresent(path -> toReturn.setRulesDir(path));
 
-	toReturn.setTimeoutMs(evaluateTimeoutSetting(ctx));
+        toReturn.setTimeoutMs(evaluateTimeoutSetting(ctx));
 
-	return toReturn;
+        return toReturn;
     }
 
 }

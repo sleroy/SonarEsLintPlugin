@@ -144,8 +144,51 @@ sonar.eslint.eslintconfigpath=eslint.json
 
 ## EsLint Custom Rules
 
-To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.eslint.eslintrulesdir`
-directory to dedicated Sonar rules for analysis.
+The plugin is shipped with the default ESLint rules. However you may want to use additional rules or some plugins with your ESLint configuration.
+
+**Notice** : Both additional rules (located in a *rules dir*) and plugins requires a Sonar rule description. Without the Sonar rule description, the ESLint results cannot be imported.
+
+### How to use additional rules.
+
+ESLint command CLI is offering this possibility : 
+
+```
+  --rulesdir [path::String]      Use additional rules from this directory
+```
+
+This functionality is also offered by the SonarQube plugin.
+
+To present custom EsLint rules in SonarQube analysis, you can provide a configuration that maps the EsLint rules from your `sonar.eslint.eslintrulesdir` directory to dedicated Sonar rules for analysis.
+
+### How to use ESLint plugins
+
+Updates your .eslintrc configuration with your favorite plugins.
+
+Then you need to provide the Sonar rule descriptions.
+
+### How to add Sonar rule descriptions
+
+By default the ESLint SonarQube plugin is loading a default set of rules defined here : 
+
+https://github.com/sleroy/SonarEsLintPlugin/blob/master/src/main/resources/eslint/eslint-rules.properties
+
+As you can see, for each rule of Eslint, you have to define a set of properties to populate the Sonar Javascript profile. Without these informations the new rules are not being imported.
+
+The plugin cannot dynamically add rules from ESLint since it is not supported by SonarQube. **Rules have to be defined and loaded at the SonarQube startup**.
+
+#### How to add the eslint plugin extra rules ? 
+
+a) **Fork the file `eslint-rules.properties` and send me the modifications to merge**
+
+The plugin will integrate the new rules for the other users.
+
+b) 
+
+
+
+
+
+
 The configuration for a EsLint Sonar rule consists of a line declaring the EsLint rule id, a boolean switch to enable or disable the rule if needed
 and some attached properties that are used by Sonar for analysis and reporting.
 

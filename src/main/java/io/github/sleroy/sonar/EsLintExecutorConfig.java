@@ -14,15 +14,15 @@ import java.io.File;
 import java.util.Objects;
 
 public class EsLintExecutorConfig {
-    public static final String ESLINT_FALLBACK_PATH  = "node_modules" + File.separatorChar + "eslint"
-	    + File.separatorChar + "bin"
-	    + File.separatorChar + "eslint.js";
-    public static final String CONFIG_JS_FILENAME    = ".eslintrc.js";
-    public static final String CONFIG_JSON_FILENAME  = ".eslintrc.json";
-    public static final String CONFIG_YAML_FILENAME  = ".eslintrc.yml";
+    public static final String ESLINT_FALLBACK_PATH = "node_modules" + File.separatorChar + "eslint"
+        + File.separatorChar + "bin"
+        + File.separatorChar + "eslint.js";
+    public static final String CONFIG_JS_FILENAME = ".eslintrc.js";
+    public static final String CONFIG_JSON_FILENAME = ".eslintrc.json";
+    public static final String CONFIG_YAML_FILENAME = ".eslintrc.yml";
     public static final String CONFIG_YAML2_FILENAME = ".eslintrc.yaml";
-    public static final String CONFIG_FILENAME	     = ".eslintrc";
-    public static final int    MAX_TIMEOUT	     = 10000;
+    public static final String CONFIG_FILENAME = ".eslintrc";
+    public static final int MAX_TIMEOUT = 10000;
 
     private String pathToEsLint;
     private String configFile;
@@ -32,52 +32,51 @@ public class EsLintExecutorConfig {
     private Integer timeoutMs;
 
     public String getConfigFile() {
-	return configFile;
+        return configFile;
     }
 
     public String getPathToEsLint() {
-	return pathToEsLint;
+        return pathToEsLint;
     }
 
     public String getRulesDir() {
-	return rulesDir;
+        return rulesDir;
     }
 
     public Integer getTimeoutMs() {
-	return timeoutMs;
+        return timeoutMs;
     }
 
     /**
      * Checks if is path to eslint is the same at the argument
      *
-     * @param eslintPath
-     *            the eslintPath
+     * @param eslintPath the eslintPath
      * @return true, if both path are similar
      */
     public boolean isPathToEsLint(final String eslintPath) {
-	return Objects.equals(pathToEsLint, eslintPath);
+        return Objects.equals(pathToEsLint, eslintPath);
     }
 
     public void setConfigFile(final String configFile) {
-	this.configFile = configFile;
+        this.configFile = configFile;
     }
 
     public void setPathToEsLint(final String pathToEsLint) {
-	this.pathToEsLint = pathToEsLint;
+        this.pathToEsLint = pathToEsLint;
     }
 
     public void setRulesDir(final String rulesDir) {
-	this.rulesDir = rulesDir;
+        this.rulesDir = rulesDir;
     }
 
     public void setTimeoutMs(final Integer timeoutMs) {
-	this.timeoutMs = timeoutMs;
+        this.timeoutMs = timeoutMs;
     }
 
     @Override
     public String toString() {
-	return "EsLintExecutorConfig [pathToEsLint=" + pathToEsLint + ", configFile=" + configFile + ", rulesDir="
-		+ rulesDir + ", timeoutMs=" + timeoutMs + "]";
+        return "EsLintExecutorConfig [pathToEsLint=" + pathToEsLint + ", configFile=" + configFile + ", rulesDir="
+            + rulesDir + ", timeoutMs=" + timeoutMs + "]";
     }
 
 }

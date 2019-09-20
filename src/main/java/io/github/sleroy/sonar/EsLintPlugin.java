@@ -29,22 +29,10 @@ import org.sonar.api.PropertyType;
         @Property(
                 key = EsLintPlugin.SETTING_ES_RULE_CONFIGS,
                 name = "ESLint Rule-Collections",
-                description = "A collection of configurations for mapping ESLint rules to Sonar rules",
+                description = "A path to a file that provides the custom Sonar rule descriptions",
                 project = false,
                 global = true,
-                fields = {
-                        @PropertyField(
-                                key = "name",
-                                name = "rule collection name",
-                                type = PropertyType.STRING
-                        ),
-                        @PropertyField(
-                                key = "config",
-                                name = "rule configs & parameters",
-                                type = PropertyType.TEXT,
-                                indicativeSize = 120
-                        )
-                }
+                type = PropertyType.STRING
         ),
         @Property(
                 key = EsLintPlugin.SETTING_ES_LINT_CONFIG_PATH,

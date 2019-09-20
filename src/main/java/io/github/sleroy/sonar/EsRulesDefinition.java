@@ -9,10 +9,11 @@
  */
 package io.github.sleroy.sonar;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,14 @@ public class EsRulesDefinition implements RulesDefinition {
     @SuppressWarnings("HardcodedFileSeparator")
     private static final String CORE_RULES_CONFIG_RESOURCE_PATH = "/eslint/eslint-rules.properties";
     private static final String DEFAULT_TAGS = "eslint";
+    private static final Logger LOGGER = LoggerFactory.getLogger(EsRulesDefinition.class);
 
+    /**
+     * Load the rules.
+     *
+     * @param stream          load the rules from a stream.
+     * @param rulesCollection the rules collection.
+     */
     public static void loadRules(InputStream stream, List<EsLintRule> rulesCollection) {
         final Properties properties = new Properties();
 
@@ -56,6 +64,10 @@ public class EsRulesDefinition implements RulesDefinition {
             EsRulesDefinition.LOG.error("Error while loading ESLint rules: {}", e.getMessage(), e);
         }
 
+        loadingRuleDefinitionsFromProps(rulesCollection, properties);
+    }
+
+    public static void loadingRuleDefinitionsFromProps(List<EsLintRule> rulesCollection, Properties properties) {
         for (final String propKey : properties.stringPropertyNames()) {
 
             if (propKey.contains(".")) {
@@ -219,14 +231,29 @@ public class EsRulesDefinition implements RulesDefinition {
             return;
         }
 
-        final String[] configKeys = settings.getStringArray(EsLintPlugin.SETTING_ES_RULE_CONFIGS);
+        final Optional<String> sonarRuleDefinitionsPathStr = settings.get(EsLintPlugin.SETTING_ES_RULE_CONFIGS);
+        if (!sonarRuleDefinitionsPathStr.isPresent()) {
+            LOGGER.warn(("Sonar custom rules is not defined"));
+            return;
+        }
+        Path ruleDefPath = Paths.get(sonarRuleDefinitionsPathStr.get());
+        if (!Files.exists(ruleDefPath)) {
+            LOGGER.error("Path {} cannot be accessed, cannot load the Sonar ESLint custom rules", ruleDefPath);
+            return ;
+        }
 
-        for (final String cfgKey : configKeys) {
-            final Optional<String> rulesConfig = settings.get(cfgKey);
-            if (rulesConfig.isPresent()) {
-                final InputStream rulesConfigStream = new ByteArrayInputStream(rulesConfig.get().getBytes(Charset.defaultCharset()));
-                EsRulesDefinition.loadRules(rulesConfigStream, eslintRules);
-            }
+        Properties properties = new Properties();
+
+        String sonarRulePath = sonarRuleDefinitionsPathStr.get();
+        try (BufferedInputStream inputStream = new BufferedInputStream(Files.newInputStream(ruleDefPath));) {
+            properties.load(inputStream);
+            EsRulesDefinition.loadingRuleDefinitionsFromProps(eslintRules, properties);
+            LOG.info("Custom rules loaded {}", eslintRules.size());
+
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Cannot find a Sonar ESLint custom rule description to the path {}", sonarRulePath, e);
+        } catch (IOException e) {
+            LOGGER.error("Cannot read the Sonar ESLint custom rule description (path {})", sonarRulePath, e);
         }
     }
 }
