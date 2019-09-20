@@ -182,10 +182,11 @@ a) **Fork the file `eslint-rules.properties` and send me the modifications to me
 
 The plugin will integrate the new rules for the other users.
 
-b) 
+b) Provides an additional sonar rule definitions by providing a link
 
+![image](https://user-images.githubusercontent.com/5766034/65330579-25bcac80-dbbb-11e9-8006-3ae0eea16c0b.png)
 
-
+![image](https://user-images.githubusercontent.com/5766034/65330546-12a9dc80-dbbb-11e9-9353-65a70851d999.png)
 
 
 
@@ -195,19 +196,31 @@ and some attached properties that are used by Sonar for analysis and reporting.
 For example taking the `export-name` rule from the [tslint-microsoft-contrib](https://github.com/Microsoft/tslint-microsoft-contrib) package,
 a configuration for that rule in SonarEsLintPlugin could look as follows:
 
-    export-name=true
-    export-name.name=The name of the exported module must match the filename of the source file.
-    export-name.severity=MAJOR
-    export-name.description=This is case-sensitive but ignores file extension. Since version 1.0, this rule takes a list of regular expressions as a parameter. Any export name matching that regular expression will be ignored.
-    export-name.debtFunc=LINEAR_OFFSET
-    export-name.debtScalar=15min
-    export-name.debtOffset=1h
-    export-name.debtType=HARDWARE_RELATED_PORTABILITY
+    rule-name=true
+    rule-name.name=The name of the exported module must match the filename of the source file.
+    rule-name.severity=MAJOR
+    rule-name.description=This is case-sensitive but ignores file extension. Since version 1.0, this rule takes a list of regular expressions as a parameter. Any export name matching that regular expression will be ignored.
+    rule-name.debtFunc=LINEAR_OFFSET
+    rule-name.debtScalar=15min
+    rule-name.debtOffset=1h
+    rule-name.debtType=HARDWARE_RELATED_PORTABILITY
 
 **You will need to restart the SonarQube server after configuring custom rules this way before subsequent analyses will pick them up. You will also need to activate the new rules after restart for any quality profile you want them to participate in - by default they will be disabled.**
 
 * For documentation about the `technical debt` parameters look [here](http://docs.sonarqube.org/display/PLUG/Rule+Remediation+Costs) and [here](http://javadocs.sonarsource.org/5.2/apidocs/org/sonar/api/server/debt/DebtRemediationFunction.html)
 * For possible values for `debtType` go [here](http://javadocs.sonarsource.org/5.2/apidocs/org/sonar/api/server/rule/RulesDefinition.SubCharacteristics.html)
+ 
+### What is happening when an ESLint rule is not documented into the Sonar plugin
+
+Important : when a rule from an ESLint plugin is detected by the plugin, I am assigning the ESLint violation to the rule "Unknown rule" like in the caption below :
+
+Therefore unless you provide the proper definition for this rule, you will have several violations with this description : 
+
+![image](https://user-images.githubusercontent.com/5766034/65330282-88617880-dbba-11e9-8bc7-fe1ae7db84a0.png)
+
+![image](https://user-images.githubusercontent.com/5766034/65330384-bc3c9e00-dbba-11e9-915b-897e2a332dd5.png)
+![image](https://user-images.githubusercontent.com/5766034/65330430-d7a7a900-dbba-11e9-904e-4b50495a671f.png)
+
 
 ## Licence
 MIT

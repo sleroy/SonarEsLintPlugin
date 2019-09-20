@@ -67,11 +67,8 @@ public class EsRulesDefinitionTest {
         // cfg2
         final RulesDefinition.Rule rule2 = getRule("react-rule1");
         assertNotNull(rule2);
-        assertEquals("test rule #2", rule2.name());
-        assertEquals(Severity.MINOR, rule2.severity());
-        assertEquals("#2 description", rule2.htmlDescription());
-        assertEquals(null, rule2.debtRemediationFunction());
-        assertEquals(RuleType.CODE_SMELL, rule2.type());
+        assertEquals("disallow to reference modules with variables and require to use the getter syntax instead angular.module('myModule') (y022)", rule2.name());
+
 
     }
 
