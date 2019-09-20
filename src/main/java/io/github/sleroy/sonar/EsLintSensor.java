@@ -121,7 +121,7 @@ public class EsLintSensor implements Sensor {
             LOG.warn("Eslint returned no result at all");
             return;
         }
-        LOG.info("{} Files have been analyzed", issues.size());
+        LOG.info("ESLint : {} Files have been analyzed", issues.size());
 
         // Each issue bucket will contain info about a single file
         for (final Entry<String, List<EsLintIssue>> filePathEntry : issues.entrySet()) {

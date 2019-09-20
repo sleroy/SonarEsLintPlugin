@@ -1,0 +1,6 @@
+projectKey=abc
+serverUrl=http://localhost:9000
+serverVersion=6.7.7.38951
+dashboardUrl=http://localhost:9000/dashboard/index/abc
+ceTaskId=AW1PIEKSsiIp4n9Bbt_U
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW1PIEKSsiIp4n9Bbt_U
